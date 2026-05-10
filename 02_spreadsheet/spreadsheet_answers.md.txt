@@ -1,0 +1,12 @@
+Spreadsheet Answers
+Cleaning Steps
+1.Standardized merchant names using Find/Replace.
+2.Formatted dates to YYYY-MM-DD.
+3.Handled missing values by [explain what you did, e.g., deleting them or using IFERROR].
+
+Final Answers
+ 1.Total raw rows: 30 transaction rows
+ 2.Total cleaned rows: 30
+ 3.Top region by GMV: The APAC region has the highest total GMV, with a total amount_usd of $82,594.00.
+ 4.Number of high value transactions: There are 7 transactions flagged as high value.
+ 5.Number of high risk transactions: There are 9 transactions flagged as high risk.

@@ -1,0 +1,68 @@
+Q1: Count transactions by status
+query:
+SELECT status, COUNT(*) as total_count 
+FROM transactions 
+GROUP BY status;
+summary:this query counts the number of transactions which is grouped by status(success or failed)
+
+Q2: Total captured GMV by merchant
+query:
+SELECT merchant_name, SUM(amount_usd) as total_gmv 
+FROM transactions 
+WHERE status = 'captured' 
+GROUP BY merchant_name;
+summary:This calculates the total money (GMV) earned by each shop, but only for the payments that were successfully "captured."
+
+Q3: Top 10 merchants by captured GMV
+QUERY:
+SELECT merchant_name, SUM(amount_usd) as total_gmv 
+FROM transactions 
+WHERE status = 'captured' 
+GROUP BY merchant_name 
+ORDER BY total_gmv DESC 
+LIMIT 10;
+summary:This is a "Top 10" leaderboard to see which shops are our biggest winners.
+
+Q4: Daily GMV and successful transaction count
+query:
+SELECT transaction_date, SUM(amount_usd) as daily_gmv, COUNT(*) as successful_txns
+FROM transactions
+WHERE status = 'captured'
+GROUP BY transaction_date;
+summary:This shows us a calendar view of how much money we made every single day.
+
+Q5: Merchants with chargeback ratio above 1%
+query:
+SELECT merchant_name, 
+       (COUNT(CASE WHEN status = 'chargeback' THEN 1 END) * 1.0 / COUNT(*)) * 100 as chargeback_ratio
+FROM transactions
+GROUP BY merchant_name
+HAVING chargeback_ratio > 1;
+summary:This finds shops where too many people are complaining or asking for their money back.
+
+Q6: Regions with avg risk > 50 and > 20 transactions
+query:
+SELECT region, AVG(risk_score) as avg_risk, COUNT(*) as txn_count
+FROM transactions
+GROUP BY region
+HAVING avg_risk > 50 AND txn_count > 20;
+summary:This tells us which parts of the world seem a bit "scary" or risky for our money.
+
+Q7: Users with 3+ failed/chargeback txns on same day
+query:
+SELECT user_id, transaction_date, COUNT(*) as issue_count
+FROM transactions
+WHERE status IN ('failed', 'chargeback')
+GROUP BY user_id, transaction_date
+HAVING issue_count >= 3;
+summary:This finds people who tried to pay but failed 3 times in one day—they might be trying to do something sneaky!
+
+Q8: Detailed Merchant Risk Report
+query:
+SELECT merchant_name, 
+       COUNT(CASE WHEN status = 'chargeback' THEN 1 END) as cb_count,
+       COUNT(DISTINCT user_id) as unique_affected_users,
+       SUM(CASE WHEN status = 'chargeback' THEN amount_usd ELSE 0 END) as cb_amount
+FROM transactions
+GROUP BY merchant_name;
+summary:This is a deep "Safety Report" that shows exactly how many people and how much money was lost to disputes at each shop.
