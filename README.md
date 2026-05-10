@@ -22,7 +22,7 @@
 1. **Data:** Raw files are located in `01_data/raw/`.
 2. **Python:** Open `04_python/fintech_pipeline.ipynb` in Google Colab, upload raw files, and run all cells to generate processed outputs.
 3. **SQL:** Queries for business questions are available in `03_sql/analysis_queries.sql`.
-4. **Dashboard:** Access the operational metrics via the Looker Studio link provided above.
+4. **Dashboard:** Access the operational metrics via the Looker Studio link provided above also a pdf containing the screenshot of the dashboard.
 
 ---
 
